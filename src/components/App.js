@@ -10,10 +10,11 @@ function App ()  {
     const handleDelete = (userId) => {
         setUsers(users.filter((user) => user._id !== userId))
     }
-    const handleBookmark = (id)=>{
-        setUsers(users.map((user)=>{
+    const handleBookmark = (id) => {
+        setUsers(users.filter((user)=>{
             if(user._id===id){
-                return {...user, bookmark: !user.bookmark}
+                user.bookmark = !user.bookmark;
+                return user
             }
             return user;
         })

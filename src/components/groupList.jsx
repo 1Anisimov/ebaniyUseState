@@ -8,26 +8,39 @@ const GroupList = ({
   onItemSelect,
   selectedItem,
 }) => {
-  //   console.log(Object.keys(items));
+  if (!Array.isArray(items)) {
+    return (
+      <ul className="list-group">
+        {Object.keys(items).map((item) => (
+          <li
+            key={items[item][valueProperty]}
+            className={
+              "list-group-item" +
+              (items[item] === selectedItem ? " active" : "")
+            }
+            onClick={() => onItemSelect(items[item])}
+            role="button"
+          >
+            {items[item][contentProperty]}
+          </li>
+        ))}
+      </ul>
+    );
+  }
   return (
     <ul className="list-group">
-      {Object.keys(items).map((item) => (
+      {items.map((item) => (
         <li
+          key={item[valueProperty]}
           className={
-            "list-group-item" + (items[item] === selectedItem ? " active" : "")
+            "list-group-item" + (item === selectedItem ? " active" : "")
           }
-          onClick={() => onItemSelect(items[item])}
+          onClick={() => onItemSelect(item)}
           role="button"
-          key={items[item][valueProperty]}
         >
-          {items[item][contentProperty]}
+          {item[contentProperty]}
         </li>
       ))}
-      {/* <li className="list-group-item">An item</li>
-      <li className="list-group-item">A second item</li>
-      <li className="list-group-item">A third item</li>
-      <li className="list-group-item">A fourth item</li>
-      <li className="list-group-item">And a fifth one</li> */}
     </ul>
   );
 };
@@ -36,7 +49,7 @@ GroupList.defaultProps = {
   contentProperty: "name",
 };
 GroupList.protoTypes = {
-  items: PropTypes.object.isRequired,
+  items: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   contentProperty: PropTypes.string.isRequired,
   valueProperty: PropTypes.string.isRequired,
   onItemSelect: PropTypes.func,
